@@ -1,19 +1,19 @@
-import Blockie from 'lib-blockies';
+import Blockie from "lib-blockies";
 import {
   isValidPrivate,
   privateToPublic,
   publicToAddress,
   bufferToHex
-} from 'ethereumjs-util';
-import { randomBytes } from 'crypto';
+} from "ethereumjs-util";
+import { randomBytes } from "crypto";
 
 export function generatePrivateKey() {
-  let privateKey
+  let privateKey;
   do {
-    privateKey = randomBytes(32)
+    privateKey = randomBytes(32);
   } while (!isValidPrivate(privateKey));
 
-  return privateKey
+  return privateKey;
 }
 
 export function generateAddress() {
@@ -32,7 +32,7 @@ export function generateAddress() {
 
 export function makeBlocks(quantity) {
   const blocks = [];
-  for(let i = 0; i < quantity; i++) {
+  for (let i = 0; i < quantity; i++) {
     blocks.push(generateAddress());
   }
   return blocks;

@@ -53,7 +53,7 @@
     <div class="modal-backdrop fade" id="modal-backdrop" style="display: none;"></div>
     <div class="modal fade" tabindex="-1" role="dialog" id="modal">
       <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content" id="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Details</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close">
@@ -107,6 +107,12 @@
             closeModal();
             return false;
           });
+
+          document.getElementById('modal-content')
+            .addEventListener('click', function(e) {
+              e.stopPropagation && e.stopPropagation();
+              return false;
+            });
 
           makeBlocks(96).forEach((block) => {
             const canvas = block.blockie.createCanvas(16);

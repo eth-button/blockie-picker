@@ -51,17 +51,20 @@
             </li>
           </ul>
         </nav>
-        <blockquote class="blockquote text-center my-3">
-          <p class="mb-0">The fun part is autogenerating wallets until you find one with a cool/cute icon you can identify(with) to make it more of a personal feel.</p>
-          <footer class="blockquote-footer">
-            <a href="https://www.reddit.com/r/ethereum/comments/7sq5v3/what_is_up_with_the_little_pixelated_icon_my_eth/dt6s4sq/">
-              <cite>u/wycocopuff</cite>
-            </a>
-          </footer>
-        </blockquote>
+        <div class="text-center my-3">
+          <blockquote class="blockquote text-center my-3">
+            <p class="mb-0">The fun part is autogenerating wallets until you find one with a cool/cute icon you can identify(with) to make it more of a personal feel.</p>
+            <footer class="blockquote-footer">
+              <a href="https://www.reddit.com/r/ethereum/comments/7sq5v3/what_is_up_with_the_little_pixelated_icon_my_eth/dt6s4sq/">
+                <cite>u/wycocopuff</cite>
+              </a>
+            </footer>
+          </blockquote>
+          <button type="button" class="btn btn-primary px-3" id="refresh-button">Refresh</button>
+        </div>
       </div>
       <div style="overflow-y: scroll">
-        <div class="container d-flex flex-wrap justify-content-center py-5" id="container">
+        <div class="container d-flex flex-wrap justify-content-center py-3" id="container">
         </div>
       </div>
     </div>
@@ -79,7 +82,6 @@
             <p class="text-info">Address: <span id="address"></span></p>
             <p class="text-success">Public Key: <span id="publicKey"></span></p>
             <p class="text-danger">Private Key: <span id="privateKey"></span></p>
-
           </div>
         </div>
       </div>
@@ -113,6 +115,31 @@
             }, 500);
           }
 
+          function generateBlockies() {
+            while(container.firstChild) {
+              container.removeChild(container.firstChild);
+            }
+            makeBlocks(96).forEach((block) => {
+              const canvas = block.blockie.createCanvas(16);
+              canvas.title = block.address;
+              canvas.className = 'blockie m-3';
+              container.appendChild(canvas);
+              canvas.addEventListener('click', function(e) {
+                e.preventDefault && e.preventDefault();
+                e.stopPropagation && e.stopPropagation();
+                privateKey.innerHTML = block.privateKey;
+                publicKey.innerHTML = block.publicKey;
+                address.innerHTML = block.address;
+                backdrop.className = 'modal-backdrop show';
+                modal.className = 'modal show';
+                modal.style.display = 'block';
+                backdrop.style.display = '';
+                document.body.className = 'modal-open';
+                return false;
+              });
+            });
+          }
+
           close.addEventListener('click', function(e) {
             e.preventDefault();
             closeModal();
@@ -130,25 +157,12 @@
               return false;
             });
 
-          makeBlocks(96).forEach((block) => {
-            const canvas = block.blockie.createCanvas(16);
-            canvas.title = block.address;
-            canvas.className = 'blockie m-3';
-            container.appendChild(canvas);
-            canvas.addEventListener('click', function(e) {
-              e.preventDefault && e.preventDefault();
-              e.stopPropagation && e.stopPropagation();
-              privateKey.innerHTML = block.privateKey;
-              publicKey.innerHTML = block.publicKey;
-              address.innerHTML = block.address;
-              backdrop.className = 'modal-backdrop show';
-              modal.className = 'modal show';
-              modal.style.display = 'block';
-              backdrop.style.display = '';
-              document.body.className = 'modal-open';
-              return false;
+          document.getElementById('refresh-button')
+            .addEventListener('click', function(e) {
+              generateBlockies();
             });
-          });
+
+          generateBlockies();
         });
       }());
     </script>

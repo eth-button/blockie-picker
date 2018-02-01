@@ -1,6 +1,6 @@
 {
   "name": "blockie-picker",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Like a vanity address generator, but for ethereum's \"blockies\" identicons",
   "main": "index.js",
   "scripts": {

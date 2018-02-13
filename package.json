@@ -2,7 +2,7 @@
   "name": "blockie-picker",
   "version": "0.6.0",
   "description": "Like a vanity address generator, but for ethereum's \"blockies\" identicons",
-  "main": "index.js",
+  "main": "dist/blockie-picker.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "webpack",
@@ -20,6 +20,8 @@
   "author": "eth-button",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "4.17.0",
+    "eslint-loader": "1.9.0",
     "prettier": "1.10.2",
     "uglifyjs-webpack-plugin": "1.1.6",
     "webpack": "3.10.0",
@@ -27,6 +29,7 @@
   },
   "dependencies": {
     "ethereumjs-util": "5.1.3",
-    "lib-blockies": "git+https://github.com/eth-button/lib-blockies.git#7a6e694cc0b4cee925184e402c7a3de5a7316222"
+    "lib-address": "git+https://github.com/eth-button/lib-address.git#53494b98d9b012fe5e7205a4e51b44fbb752bd6c",
+    "lib-blockies": "git+https://github.com/eth-button/lib-blockies.git#10a4dcfd8b3adac81e3a76b375bb0e8cdd738c65"
   }
 }

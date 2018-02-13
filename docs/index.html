@@ -33,6 +33,26 @@
       html, body {
         overflow: hidden;
       }
+
+      .loading {
+        color: #2c2;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px rgba(00, 153, 255, 0.25) solid;
+      	border-top: 2px rgba(00, 153, 255, 1) solid;
+      	border-radius: 50%;
+      	-webkit-animation: loading .6s infinite linear;
+      	animation: loading .6s infinite linear;
+      }
+      @-webkit-keyframes loading {
+      	from { -webkit-transform: rotate(0deg); }
+      	to { -webkit-transform: rotate(359deg); }
+      }
+      @keyframes loading {
+      	from { transform: rotate(0deg); }
+      	to { transform: rotate(359deg); }
+      }
     </style>
   </head>
   <body>
@@ -82,6 +102,12 @@
             <p class="text-info">Address: <span id="address"></span></p>
             <p class="text-success">Public Key: <span id="publicKey"></span></p>
             <p class="text-danger">Private Key: <span id="privateKey"></span></p>
+            <div class="input-group my-3">
+              <input type="password" class="form-control" placeholder="Wallet password" id="password-input">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary d-flex align-items-center" id="download-button">Download Wallet</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -99,7 +125,26 @@
           var publicKey = document.getElementById('publicKey');
           var privateKey = document.getElementById('privateKey');
           var address = document.getElementById('address');
+          var downloadButton = document.getElementById('download-button');
+          var passwordInput = document.getElementById('password-input');
           var timeout;
+
+          function setLoading() {
+            downloadButton.innerHTML = '';
+            var text = document.createElement('span');
+            text.innerHTML = 'Generating...';
+            text.className = 'mr-2';
+            var loading = document.createElement('div');
+            loading.className = 'loading';
+            downloadButton.appendChild(text);
+            downloadButton.appendChild(loading);
+            downloadButton.className += ' disabled';
+          }
+
+          function clearLoading() {
+            downloadButton.innerHTML = 'Download Wallet';
+            downloadButton.className = downloadButton.className.replace(/ disabled$/, '');
+          }
 
           function closeModal() {
             backdrop.className = 'modal-backdrop fade';
@@ -112,8 +157,14 @@
               address.innerHTML = '';
               modal.style.display = '';
               backdrop.style.display = 'none';
+              clearLoading();
             }, 500);
           }
+
+          downloadButton.getWallet = function() {};
+          downloadButton.addEventListener('click', function() {
+            this.getWallet();
+          });
 
           function generateBlockies() {
             while(container.firstChild) {
@@ -121,15 +172,40 @@
             }
             makeBlocks(96).forEach((block) => {
               const canvas = block.blockie.createCanvas(16);
-              canvas.title = block.address;
+              canvas.title = block.address.address;
               canvas.className = 'blockie m-3';
               container.appendChild(canvas);
               canvas.addEventListener('click', function(e) {
                 e.preventDefault && e.preventDefault();
                 e.stopPropagation && e.stopPropagation();
-                privateKey.innerHTML = block.privateKey;
-                publicKey.innerHTML = block.publicKey;
-                address.innerHTML = block.address;
+                var loading = false;
+                downloadButton.getWallet = function() {
+                  if (loading || !passwordInput.value) {
+                    return;
+                  }
+                  loading = true;
+                  setLoading();
+                  setTimeout(function() {
+                    var wallet = block.address.generateWallet(passwordInput.value);
+                    var file = new File(
+                      [JSON.stringify(wallet, null, 2)],
+                      wallet.id + '.json',
+                      {
+                        type: 'application/json'
+                      }
+                    );
+                    var url = URL.createObjectURL(file);
+                    var a = document.createElement('a');
+                    a.download = wallet.id + '.json';
+                    a.href = url;
+                    a.click();
+                    loading = false;
+                    clearLoading();
+                  }, 100)
+                };
+                privateKey.innerHTML = block.address.privateKey;
+                publicKey.innerHTML = block.address.publicKey;
+                address.innerHTML = block.address.address;
                 backdrop.className = 'modal-backdrop show';
                 modal.className = 'modal show';
                 modal.style.display = 'block';
@@ -158,7 +234,7 @@
             });
 
           document.getElementById('refresh-button')
-            .addEventListener('click', function(e) {
+            .addEventListener('click', function() {
               generateBlockies();
             });
 

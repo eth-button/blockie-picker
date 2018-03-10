@@ -6,6 +6,7 @@ Only two dependencies:
 
 * [`ethereumjs-util`](https://github.com/ethereumjs/ethereumjs-util)
 * [`lib-blockies`](https://github.com/eth-button/lib-blockies)
+* [`lib-address`](https://github.com/eth-button/lib-address)
 
 ## Usage
 

@@ -20,5 +20,6 @@ export function makeBlocks(quantity) {
 }
 
 export function generateWallet(address, password) {
-  console.log(JSON.stringify(address.generateWallet(password)));
+  const wallet = JSON.stringify(address.generateWallet(password), null, 2);
+  console.log(wallet); // eslint-disable-line no-console
 }

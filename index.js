@@ -20,5 +20,5 @@ export function makeBlocks(quantity) {
 }
 
 export function generateWallet(address, password) {
-  console.log(JSON.stringify(address.generateWallet("testpassword")));
+  console.log(JSON.stringify(address.generateWallet(password)));
 }

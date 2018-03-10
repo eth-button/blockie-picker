@@ -30,6 +30,6 @@
   "dependencies": {
     "ethereumjs-util": "5.1.3",
     "lib-address": "git+https://github.com/eth-button/lib-address.git#589f20c7ca4778e86e28aa51838568a88ffec50e",
-    "lib-blockies": "git+https://github.com/eth-button/lib-blockies.git#3f0e5af2cb12cae2fb2eb216755a2a80684681e1"
+    "lib-blockies": "git+https://github.com/eth-button/lib-blockies.git#3e2311f74bbcab6a859c96cdee334c817d10da06"
   }
 }
